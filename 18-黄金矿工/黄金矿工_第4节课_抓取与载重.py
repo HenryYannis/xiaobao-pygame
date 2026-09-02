@@ -1,46 +1,69 @@
-# 黄金矿工_第4节课_抓取与载重.py
-# 学习目标：在第3节课基础上，学习如何实现物体粘连跟随效果，并模拟不同重量的拉回速度
-
-import pygame, math, random  # 导入库
+import pygame, math, random
 
 pygame.init()
-chuangkou = pygame.display.set_mode((400, 400))
-shizhong = pygame.time.Clock()
+窗口 = pygame.display.set_mode((400, 400))
+pygame.display.set_caption("Gold Miner - Lesson 4")
+时钟 = pygame.time.Clock()
 
-zx, cd, jd, zt = [200, 50], 50, 0, 0
-jinks = [[random.randint(50,350), random.randint(150,350), random.randint(10,30)] for _ in range(5)]
-# 新增变量：记录当前抓到的物体属性，None表示没抓到
-zhua_dao = None  # 抓取物（是什么），存储当前在钩子上的物体信息（为什么），None或[半径]列表（怎么用）
+锚点x, 锚点y = 200, 50                                 # 矿工绳索顶部悬挂中心固定锚点坐标
+绳长 = 50.0                                           # 绳索当前伸缩长度
+角度 = 0.0                                            # 钩子摆动角度
+钩子状态 = "摆动"                                     # 钩子状态("摆动", "出钩", "收钩")
+金块列表 = [[random.randint(60, 340), random.randint(160, 350), random.randint(12, 28)] for _ in range(5)]
+抓到金块 = None                                       # 新增变量：记录当前锁定的金块对象[x, y, 半径]
+运行中 = True
 
-yunxing = True
-while yunxing:
-    for ev in pygame.event.get():
-        if ev.type == pygame.QUIT: yunxing = False
-        if ev.type == pygame.KEYDOWN and ev.key == pygame.K_SPACE and zt == 0: zt = 1
+while 运行中:
+    当前时间 = pygame.time.get_ticks()
 
-    if zt == 0: jd = math.sin(pygame.time.get_ticks() / 500) * 80
-    elif zt == 1: cd += 5
-    elif zt == 2:  # 收回模式
-        # 新增逻辑：根据抓到物体的大小减慢回收速度
-        sudu = 5 - (zhua_dao[2]//10 if zhua_dao else 0)  # 载重计算（是什么），实现重量感（为什么），减小cd的递减量（怎么用）
-        cd -= max(1, sudu)  # 至少保持1的速度回收（是什么），防止拉不动（为什么），减去速度值（怎么用）
-        if cd <= 50: zt, cd, zhua_dao = 0, 50, None  # 卸货重置（是什么），抓到顶后清除抓取物（为什么），变量清空（怎么用）
+    for 事件 in pygame.event.get():
+        if 事件.type == pygame.QUIT:
+            运行中 = False
+        if 事件.type == pygame.KEYDOWN and 事件.key == pygame.K_SPACE:
+            if 钩子状态 == "摆动":
+                钩子状态 = "出钩"
 
-    if cd > 350: zt = 2
-    hudu = math.radians(jd + 90)
-    mx, my = zx[0] + cd * math.cos(hudu), zx[1] + cd * math.sin(hudu)
+    if 钩子状态 == "摆动":
+        角度 = math.sin(当前时间 / 500.0) * 75.0
+    elif 钩子状态 == "出钩":
+        绳长 += 6.0
+    elif 钩子状态 == "收钩":
+        # 新增代码：金块越大收绳速度越慢(模拟重物负荷)
+        收绳速度 = max(1.5, 6.0 - (抓到金块[2] / 6.0 if 抓到金块 else 0))
+        绳长 -= 收绳速度
+        if 绳长 <= 50.0:
+            抓到金块 = None                           # 新增代码：收回后释放金块
+            绳长 = 50.0
+            钩子状态 = "摆动"
 
-    # 新增代码：碰撞后不再直接删除，而是转为“抓取”状态
-    if zt == 1:  # 只有在下放时才检测抓取
-        for i, jk in enumerate(jinks):
-            if math.hypot(mx - jk[0], my - jk[1]) < jk[2]:
-                zhua_dao = jinks.pop(i); zt = 2; break  # 转移对象（是什么），从地面转到钩子上（为什么），赋值给zhua_dao变量（怎么用）
+    弧度 = math.radians(角度 + 90.0)
+    钩尖x = 锚点x + 绳长 * math.cos(弧度)
+    钩尖y = 锚点y + 绳长 * math.sin(弧度)
 
-    chuangkou.fill((255, 255, 200))
-    for jx, jy, jr in jinks: pygame.draw.circle(chuangkou, (255, 215, 0), (jx, jy), jr)
-    if zhua_dao: pygame.draw.circle(chuangkou, (255, 215, 0), (mx, my), zhua_dao[2]) # 绘制抓到的金块（是什么），随钩子移动（为什么），坐标设为(mx,my)（怎么用）
-    pygame.draw.line(chuangkou, (0, 0, 0), zx, (mx, my), 3); pygame.draw.circle(chuangkou, (100, 50, 0), zx, 10)
+    if 钩子状态 == "出钩":
+        if 钩尖x < 10 or 钩尖x > 390 or 钩尖y > 390:
+            钩子状态 = "收钩"
 
-    pygame.display.flip(); shizhong.tick(60)
+        # 新增代码：钩尖碰撞金块抓取判定
+        for 索引 in range(len(金块列表) - 1, -1, -1):
+            金块 = 金块列表[索引]
+            if math.hypot(钩尖x - 金块[0], 钩尖y - 金块[1]) < 金块[2]:
+                抓到金块 = 金块列表.pop(索引)           # 新增代码：拔出金块
+                钩子状态 = "收钩"                     # 新增代码：切换为收钩
+                break
+
+    窗口.fill((245, 235, 195))                         # 暖沙黄色地下矿洞背景全屏填充
+
+    for 金块 in 金块列表:
+        pygame.draw.circle(窗口, (255, 200, 0), (金块[0], 金块[1]), 金块[2])
+
+    if 抓到金块:                                       # 新增代码：绘制钩尖上锁定的金块
+        pygame.draw.circle(窗口, (255, 200, 0), (int(钩尖x), int(钩尖y)), 抓到金块[2])
+
+    pygame.draw.line(窗口, (70, 50, 30), (锚点x, 锚点y), (钩尖x, 钩尖y), 3)
+    pygame.draw.circle(窗口, (120, 120, 120), (int(钩尖x), int(钩尖y)), 6)
+
+    pygame.display.flip()                              # 双缓冲刷新：将新绘制的画面一次性呈现到屏幕
+    时钟.tick(60)                                      # 锁定帧率：稳定每秒60帧流畅运行
 
 pygame.quit()

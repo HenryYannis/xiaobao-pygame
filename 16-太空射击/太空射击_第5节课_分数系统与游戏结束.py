@@ -1,50 +1,91 @@
-# 太空射击_第5节课_分数系统与游戏结束.py
-# 学习目标：掌握分数系统的设计、失败判定及游戏结算画面的展示，完成完整的游戏闭环
+import pygame, random, math
 
-import pygame, random, math  # 导入库（是什么），驱动核心（为什么），必备（怎么用）
+pygame.init()
+窗口 = pygame.display.set_mode((400, 600))
+pygame.display.set_caption("Space Shooter - Lesson 5")
+时钟 = pygame.time.Clock()
+字体 = pygame.font.Font(None, 36)                     # 创建纯内置默认字体(是什么)，避免跨平台字体报错(为什么)，字号36(怎么用)
 
-pygame.init()  # 初始化（是什么），引擎预备（为什么），开头调用（怎么用）
-chuangkou = pygame.display.set_mode((400, 600))  # 窗口（是什么），舞台（为什么），元组参数（怎么用）
-shizhong, ziti = pygame.time.Clock(), pygame.font.SysFont(None, 30)  # 初始化组件（是什么），时钟与字体（为什么），一次性定义（怎么用）
+飞船x, 飞船y = 200, 500                               # 玩家飞船基准坐标
+敌机列表 = []                                          # 敌机坐标列表[[x, y], ...]
+子弹列表 = []                                          # 激光子弹坐标列表[[x, y], ...]
+得分 = 0                                              # 新增变量：击落敌机累计得分
+游戏结束 = False                                      # 新增变量：标记飞船是否被撞毁
+运行中 = True
 
-# 新增变量：分数与游戏结束状态
-feichuan, diren_list, zidan_list, defen, jieshu = [200, 500], [], [], 0, False  # 状态变量（是什么），包含分数与标志（为什么），多重初始化（怎么用）
+while 运行中:
+    for 事件 in pygame.event.get():
+        if 事件.type == pygame.QUIT:
+            运行中 = False
+        if 事件.type == pygame.KEYDOWN and 事件.key == pygame.K_SPACE:
+            if 游戏结束:                               # 新增代码：被撞毁后按空格键重开新局
+                飞船x, 飞船y = 200, 500               # 新增代码：重置飞船坐标
+                敌机列表.clear()                      # 新增代码：清空场上敌机
+                子弹列表.clear()                      # 新增代码：清空残留子弹
+                得分 = 0                              # 新增代码：分数清零
+                游戏结束 = False                      # 新增代码：重置状态为进行中
+            else:
+                子弹列表.append([飞船x, 飞船y - 20])   # 发射子弹：从飞船顶端生成一枚向上激光
 
-yunxing = True  # 运行开关（是什么），管理循环（为什么），布尔变量（怎么用）
-while yunxing:  # 主循环（是什么），中枢（为什么），不断重复执行（怎么用）
-    for ev in pygame.event.get():  # 监听事件（是什么），捕捉动作（为什么），轮询读取（怎么用）
-        if ev.type == pygame.QUIT: yunxing = False  # 退出判定（是什么），关窗口（为什么），改状态位（怎么用）
-        if ev.type == pygame.KEYDOWN and ev.key == pygame.K_SPACE and not jieshu: zidan_list.append([feichuan[0], feichuan[1]-20])  # 发射（是什么），生成子弹（为什么），复合判断（怎么用）
+    if not 游戏结束:                                   # 新增代码：仅在未被撞毁时更新飞行与战斗
+        按键 = pygame.key.get_pressed()
+        if 按键[pygame.K_LEFT] and 飞船x > 25:         # 飞船向左移动限位
+            飞船x -= 6
+        if 按键[pygame.K_RIGHT] and 飞船x < 375:       # 飞船向右移动限位
+            飞船x += 6
 
-    if not jieshu:  # 运行中逻辑
-        jp = pygame.key.get_pressed()  # 读键盘（是什么），控制位移（为什么），更新x（怎么用）
-        if jp[pygame.K_LEFT] and feichuan[0]>20: feichuan[0]-=5; 
-        if jp[pygame.K_RIGHT] and feichuan[0]<380: feichuan[0]+=5; 
+        if random.random() < 0.025:                    # 随机生成：每帧2.5%概率在顶部生成新敌机
+            敌机列表.append([random.randint(25, 375), -20])
 
-        if random.random() < 0.02: diren_list.append([random.randint(20, 380), -20])  # 产生敌人（是什么），随机出现（为什么），追加列表（怎么用）
+        for 索引 in range(len(敌机列表) - 1, -1, -1):  # 遍历敌机向下推进
+            敌机 = 敌机列表[索引]
+            敌机[1] += 3
 
-        for i in range(len(diren_list)-1, -1, -1):  # 遍历敌人（是什么），处理碰撞（为什么），倒序循环（怎么用）
-            diren_list[i][1] += 3; 
-            # 新增逻辑：撞机检测
-            if math.sqrt((feichuan[0]-diren_list[i][0])**2 + (feichuan[1]-diren_list[i][1])**2) < 35: jieshu = True  # 失败判定（是什么），撞机逻辑（为什么），标志位置True（怎么用）
-            if diren_list[i][1] > 600: diren_list.pop(i)  # 出界清理（是什么），释放资源（为什么），超限即pop（怎么用）
+            # 玩家撞机判定：利用勾股定理计算飞船中心与敌机中心的欧氏距离
+            if math.hypot(飞船x - 敌机[0], 飞船y - 敌机[1]) <= 30:  # 新增代码：被敌机撞毁判定
+                游戏结束 = True
 
-        for i in range(len(zidan_list)-1, -1, -1):  # 遍历子弹（是什么），判定击中（为什么），倒序循环（怎么用）
-            zidan_list[i][1] -= 8; 
-            for j in range(len(diren_list)-1, -1, -1):  # 嵌套循环（是什么），检测击中（为什么），再次倒序（怎么用）
-                if math.sqrt((zidan_list[i][0]-diren_list[j][0])**2 + (zidan_list[i][1]-diren_list[j][1])**2) < 25: 
-                    zidan_list.pop(i); diren_list.pop(j); defen += 10; break  # 击中销毁并加分（是什么），记录成绩（为什么），执行复合动作（怎么用）
+            if 敌机[1] > 620:                          # 越过底部边界后销毁
+                敌机列表.pop(索引)
 
-    chuangkou.fill((10, 10, 30))  # 刷深蓝（是什么），清屏（为什么），RGB填充（怎么用）
-    pygame.draw.polygon(chuangkou, (0, 200, 255), [(feichuan[0], feichuan[1]-20), (feichuan[0]-15, feichuan[1]+15), (feichuan[0]+15, feichuan[1]+15)])  # 画船（是什么），三角形（为什么），polygon绘图（怎么用）
-    for dr in diren_list: pygame.draw.circle(chuangkou, (255, 50, 50), dr, 20)  # 画敌群（是什么），红球（为什么），循环（怎么用）
-    for zd in zidan_list: pygame.draw.circle(chuangkou, (255, 255, 0), zd, 5)  # 画弹幕（是什么），黄点（为什么），循环（怎么用）
-    # 新增代码：显示分数看板
-    chuangkou.blit(ziti.render(f"Score: {defen}", True, (255, 255, 255)), (10, 10))  # 显分（是什么），反馈成果（为什么），文字贴图（怎么用）
+        for 子弹索引 in range(len(子弹列表) - 1, -1, -1):  # 遍历子弹向上发射
+            子弹 = 子弹列表[子弹索引]
+            子弹[1] -= 8
 
-    if jieshu:  # 结算画面（是什么），游戏结束提示（为什么），判断标志位（怎么用）
-        chuangkou.fill((0, 0, 0)); chuangkou.blit(ziti.render(f"GAME OVER - Score: {defen}", True, (255, 0, 0)), (80, 280))  # 写结局（是什么），居中显示（为什么），显示红字（怎么用）
+            已命中 = False
+            for 敌机索引 in range(len(敌机列表) - 1, -1, -1):
+                敌机 = 敌机列表[敌机索引]
+                if math.hypot(子弹[0] - 敌机[0], 子弹[1] - 敌机[1]) <= 25:  # 激光击中敌机判定
+                    敌机列表.pop(敌机索引)             # 销毁被击中的敌机
+                    得分 += 10                        # 新增代码：成功消灭敌机加10分
+                    已命中 = True
+                    break
 
-    pygame.display.flip(); shizhong.tick(60)  # 刷新与定帧（是什么），完成一帧（为什么），同步频率（怎么用）
+            if 已命中:
+                子弹列表.pop(子弹索引)
+            elif 子弹[1] < -10:                        # 飞出顶部边界后销毁子弹
+                子弹列表.pop(子弹索引)
 
-pygame.quit()  # 退出（是什么），清理资源（为什么），程序结束（怎么用）
+    窗口.fill((10, 10, 30))                           # 深空藏蓝色背景全屏填充
+
+    # 绘制三角形玩家战机(顶点、左翼、右翼)
+    飞船顶点 = [(飞船x, 飞船y - 20), (飞船x - 15, 飞船y + 15), (飞船x + 15, 飞船y + 15)]
+    pygame.draw.polygon(窗口, (0, 200, 255), 飞船顶点)
+
+    for 敌机 in 敌机列表:                              # 循环绘制红色圆形敌机(半径15)
+        pygame.draw.circle(窗口, (255, 60, 60), 敌机, 15)
+
+    for 子弹 in 子弹列表:                              # 循环绘制黄色高能激光子弹(半径4)
+        pygame.draw.circle(窗口, (255, 220, 0), 子弹, 4)
+
+    得分画面 = 字体.render(f"SCORE: {得分}", True, (255, 255, 255))   # 新增代码：默认字体渲染白色纯英文得分
+    窗口.blit(得分画面, (10, 10))
+
+    if 游戏结束:
+        提示画面 = 字体.render("GAME OVER - Press SPACE", True, (255, 60, 60))  # 新增代码：红色醒目英文提示失败与按空格重开
+        窗口.blit(提示画面, (30, 280))                                       # 新增代码：居中贴在屏幕中央位置
+
+    pygame.display.flip()                              # 双缓冲刷新：将新绘制的画面一次性呈现到屏幕
+    时钟.tick(60)                                      # 锁定帧率：稳定每秒60帧流畅运行
+
+pygame.quit()

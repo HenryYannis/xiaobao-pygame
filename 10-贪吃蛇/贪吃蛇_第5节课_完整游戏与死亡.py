@@ -1,0 +1,74 @@
+import pygame, random
+
+pygame.init()
+窗口 = pygame.display.set_mode((400, 400))
+pygame.display.set_caption("Snake - Lesson 5")
+时钟 = pygame.time.Clock()
+字体 = pygame.font.Font(None, 36)                     # 创建纯内置默认字体(是什么)，避免跨平台字体报错(为什么)，字号36(怎么用)
+
+格点 = 20                                             # 每个网格单元的像素跨度
+蛇身 = [[200, 200], [180, 200], [160, 200]]           # 蛇身节点坐标列表(由头到尾排列)
+速度 = [格点, 0]                                      # 初始移动方向与步长(默认向右)
+食物 = [random.randint(0, 19) * 格点, random.randint(0, 19) * 格点]  # 随机生成食物对齐格点坐标
+得分 = 0                                              # 累计吃到食物得分
+下次移动时间 = 0                                      # 控制蛇移动频次的毫秒时间戳
+游戏结束 = False                                      # 新增变量：标记当前是否发生撞墙或咬尾死亡
+运行中 = True
+
+while 运行中:
+    当前时间 = pygame.time.get_ticks()
+
+    for 事件 in pygame.event.get():
+        if 事件.type == pygame.QUIT:
+            运行中 = False
+        if 游戏结束 and 事件.type == pygame.KEYDOWN and 事件.key == pygame.K_SPACE:  # 新增代码：死亡后按空格键重开新局
+            蛇身 = [[200, 200], [180, 200], [160, 200]]  # 新增代码：重置初始3节身体
+            速度 = [格点, 0]                          # 新增代码：重置向右移动
+            食物 = [random.randint(0, 19) * 格点, random.randint(0, 19) * 格点]  # 新增代码：重置食物
+            得分 = 0                                  # 新增代码：分数清零
+            游戏结束 = False                          # 新增代码：恢复游戏进行中
+
+        if not 游戏结束 and 事件.type == pygame.KEYDOWN:  # 灵敏按键转向(附带防反向掉头自杀保护)
+            if 事件.key == pygame.K_UP and 速度 != [0, 格点]:
+                速度 = [0, -格点]
+            elif 事件.key == pygame.K_DOWN and 速度 != [0, -格点]:
+                速度 = [0, 格点]
+            elif 事件.key == pygame.K_LEFT and 速度 != [格点, 0]:
+                速度 = [-格点, 0]
+            elif 事件.key == pygame.K_RIGHT and 速度 != [-格点, 0]:
+                速度 = [格点, 0]
+
+    if not 游戏结束 and 当前时间 > 下次移动时间:       # 维持60FPS稳定渲染的同时，每隔120毫秒移动一步蛇身
+        下次移动时间 = 当前时间 + 120
+        新蛇头 = [蛇身[0][0] + 速度[0], 蛇身[0][1] + 速度[1]]
+
+        if 新蛇头[0] < 0 or 新蛇头[0] >= 400 or 新蛇头[1] < 0 or 新蛇头[1] >= 400:  # 新增代码：撞击四周边框判定死亡
+            游戏结束 = True
+        elif 新蛇头 in 蛇身:                           # 新增代码：撞击自己身体躯干判定死亡
+            游戏结束 = True
+        else:
+            蛇身.insert(0, 新蛇头)                     # 头部向前推进一步(加头逻辑)
+            if 新蛇头 == 食物:                         # 进食判定：吃到食物不裁切尾巴，身体自然增长
+                得分 += 1                             # 新增代码：吃到食物加1分
+                食物 = [random.randint(0, 19) * 格点, random.randint(0, 19) * 格点]
+            else:
+                蛇身.pop()                            # 未吃到食物：移除最后一节尾部(去尾维持原长)
+
+    窗口.fill((0, 0, 0))                               # 经典纯黑色背景全屏填充
+    pygame.draw.rect(窗口, (255, 60, 60), (食物[0], 食物[1], 格点, 格点))  # 绘制红色矩形食物
+
+    for 序号, 节点 in enumerate(蛇身):                 # 循环绘制蛇身体各个节点
+        颜色 = (0, 255, 120) if 序号 == 0 else (0, 180, 80)               # 蛇头亮绿、身体深绿
+        pygame.draw.rect(窗口, 颜色, (节点[0], 节点[1], 格点 - 1, 格点 - 1))  # 留1像素间隙呈现方块质感
+
+    得分画面 = 字体.render(f"SCORE: {得分}", True, (255, 255, 255))       # 默认字体渲染白色纯英文得分
+    窗口.blit(得分画面, (10, 10))
+
+    if 游戏结束:
+        提示画面 = 字体.render("GAME OVER - Press SPACE", True, (255, 60, 60))  # 新增代码：红色醒目英文提示死亡与空格重开
+        窗口.blit(提示画面, (30, 180))                                       # 新增代码：居中贴在画面中部
+
+    pygame.display.flip()                              # 双缓冲刷新：将新绘制的画面一次性呈现到屏幕
+    时钟.tick(60)                                      # 锁定60FPS高帧率流畅运行
+
+pygame.quit()

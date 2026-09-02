@@ -1,11 +1,11 @@
 # XiaoBao-Pygame | Python Game Series Curriculum (Teacher & Educator Edition)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python Version](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/)
+[![Python Version](https://img.shields.io/badge/python-3.10--3.12%20(Recommended%203.12)-blue.svg)](https://www.python.org/)
 [![Library Dependency](https://img.shields.io/badge/dependency-Pygame-green.svg)](https://www.pygame.org/)
-[![Curriculum Complexity](https://img.shields.io/badge/Curriculum-18%20Games%20%2F%2069%20Lessons-orange.svg)](#curriculum-syllabus-difficulty-ladder)
+[![Curriculum Complexity](https://img.shields.io/badge/Curriculum-18%20Games%20%2F%2070%20Lessons-orange.svg)](#curriculum-syllabus-difficulty-ladder)
 
-This repository is designed specifically for **programming beginners** and **K-12 educators**. It contains an educational curriculum based on the **Pygame** engine. The curriculum includes **18 classic games** of varying difficulty levels, split across **69 step-by-step, progressive lessons**. It is designed to teach students logical thinking and coordinate-based math concepts through interactive, playful examples.
+This repository is designed specifically for **programming beginners** and **K-12 educators**. It contains an educational curriculum based on the **Pygame** engine. The curriculum includes **18 classic games** of varying difficulty levels, split across **70 step-by-step, progressive lessons**. It is designed to teach students logical thinking and coordinate-based math concepts through interactive, playful examples.
 
 ---
 
@@ -13,11 +13,15 @@ This repository is designed specifically for **programming beginners** and **K-1
 
 To ensure that the code is completely beginner-friendly and readable, all files in this repository strictly adhere to the following **five core laws**:
 
-1. **Pinyin Variable Naming**: All variable and function names are written in Chinese Pinyin (e.g., `feichuan_sudu = 5` for "spaceship speed"). This eliminates English vocabulary barriers for native Chinese-speaking children and allows them to focus purely on coding logic.
-2. **"Three-in-One" Inline Comments**: **Every single line** of code features a comprehensive comment detailing: **What** the line is (Function) + **Why** it is there (Principle) + **How** to use it (Key parameters).
-3. **Strict Constraints (40 lines / 3-5 lessons)**: Each lesson is restricted to **30-40 lines** of logical code (excluding comments and blank lines). Each game is built within **3 to 5 lessons** so that students complete games quickly, preventing learning fatigue and keeping motivation high.
-4. **Zero External Assets**: All visual rendering is done using Pygame's vector drawing methods (`pygame.draw.circle`, `pygame.draw.rect`, etc.). No external image or audio files are loaded. This prevents common path/directory errors, allowing students to focus 100% on the core algorithms.
-5. **Incremental Diff Marking**: Whenever code is added to a new lesson compared to the previous one, it is preceded by specific markers: `# 新增变量：` (new variables), `# 新增函数：` (new functions), or `# 新增代码：` (new code).
+1. **Pure Chinese Identifier Naming**: All variable and function names are written directly in Chinese characters (natively supported by Python 3 UTF-8). This eliminates English vocabulary barriers for young learners and makes reading code feel as natural as reading a sentence.
+2. **Column-Aligned Inline Comments**:
+   - Comments are placed at the end of code lines and vertically aligned around column 50–55 using spaces. The left side is clean code, and the right side is orderly explanation.
+   - Boilerplate lines (imports, `pygame.init()`, simple zero-assignments) are left unencumbered. Comments strictly focus on coordinates, key math, collision algorithms, and Pygame mechanics.
+3. **Lesson Balance (3–5 Lessons, No Rigid Line Limit)**: No artificial line count limits. Priority is placed on clean, self-explanatory logic rather than compressing multiple statements. Each game is built within **3 to 5 lessons** so students experience the satisfaction of completing a game in a digestible timeframe.
+4. **Zero External Assets & Default Font (Error-Proof & Universal)**:
+   - All visual rendering is done using Pygame vector drawing methods (`pygame.draw.circle`, `pygame.draw.rect`, etc.). No external images or audio files are used, preventing file-path errors.
+   - Strictly uses Pygame's built-in default font `pygame.font.Font(None, 36)`. Never loads system fonts to guarantee cross-platform compatibility. All on-screen rendered text uses clean English (e.g., `SCORE`, `GAME OVER`, `YOU WIN!`, `TIME UP!`).
+5. **Incremental Diff Markers**: Newly introduced lines compared to the previous lesson are marked at the end of the line: `# 新增变量：` (new variable), `# 新增函数：` (new function), or `# 新增代码：` (new code).
 
 ---
 
@@ -27,70 +31,67 @@ The syllabus scales gradually from single click event checks to complex multi-bo
 
 | Difficulty | Index | Game Title | Lessons | Core Pedagogical Concepts |
 | :--- | :---: | :--- | :---: | :--- |
-| **Beginner** | 01 | [Click & Pop](./01-点击消除/) | 3 Lessons | Click coordinate checks, random object positioning, basic list management |
-| **Beginner** | 02 | [Whack-A-Mole](./02-打地鼠/) | 3 Lessons | Mouse coordinates, time controls, randomized state machines |
-| **Beginner** | 03 | [Paddle Ball](./03-弹跳球接球/) | 3 Lessons | Elastic physical rebounds, keyboard movement, bounding box intersection |
-| 🟩 **Elementary** | 04 | [Fruit Slasher](./04-水果切切乐/) | 3 Lessons | Slide-trace vector calculations, fruit gravity launch mechanics |
-| 🟩 **Elementary** | 05 | [Color Matcher](./05-颜色匹配/) | 3 Lessons | Random color generation, logic matching checks, combo timer systems |
-| 🟩 **Elementary** | 06 | [Pixel Painter](./06-像素画家/) | 3 Lessons | 2D coordinate grid creation, mouse brush canvas drawing, color palettes |
-| 🟩 **Elementary** | 07 | [Tic-Tac-Toe](./07-井字棋对战/) | 3 Lessons | 2D list state matrix, grid-to-coordinate mapping, win-scan algorithms |
-| 🟦 **Intermediate**| 08 | [Brick Breaker](./08-打砖块/) | 5 Lessons | 2D brick array grid, angle deflection reflection, multi-object collision |
-| 🟦 **Intermediate**| 09 | [Catch the Fruits](./09-接水果/) | 5 Lessons | Keyboard bounds check, multi-object speed, scoring systems |
-| 🟦 **Intermediate**| 10 | [Dino Runner](./10-小恐龙跳一跳/) | 3 Lessons | Basic gravity jumps, floor boundary checks, dynamic cactus generation |
-| 🟦 **Intermediate**| 11 | [Snake](./11-贪吃蛇/) | 5 Lessons | Head-insertion & tail-deletion queue, turning buffers, growth logic |
-| 🟪 **Advanced** | 12 | [Beat Block](./12-节奏方块/) | 4 Lessons | Scrolling tracks, rhythmic hit window checks, combo scoring systems |
-| 🟪 **Advanced** | 13 | [Maze Runner](./13-迷宫逃脱/) | 5 Lessons | 2D grid map coordinates, wall bounding-box blocking, countdown timers |
-| 🟪 **Advanced** | 14 | [Simon Memory](./14-颜色记忆大师/) | 5 Lessons | Automated sequence playback, click state queueing, list matches |
-| 🟥 **Master** | 15 | [Flappy Bird](./15-横版飞行避障/) | 3 Lessons | Flappy jump velocity, horizontal obstacles scrolling, screen pass checks |
-| 🟥 **Master** | 16 | [Space Invaders](./16-太空射击/) | 5 Lessons | Laser spawning & garbage collection, group collision checks, stars scrolling |
-| 🟥 **Master** | 17 | [Slider Puzzle](./17-数字拼图/) | 3 Lessons | Inversion numbers checking for solvable states, grid array swap logic |
-| 🟥 **Master** | 18 | [Gold Miner](./18-黄金矿工/) | 5 Lessons | Trigonometric rotation (sin/cos), claw animation vectors, weight-based pull |
+| **Beginner** | 01 | [Pixel Painter](./01-像素画家/) | 3 Lessons | 2D coordinate grid creation, cursor-to-cell index math, palette switching |
+| **Beginner** | 02 | [Click & Pop](./02-点击消除/) | 3 Lessons | Click coordinate checks, random positioning, Euclidean distance detection |
+| **Beginner** | 03 | [Beat Block](./03-节奏方块/) | 4 Lessons | Rhythmic hit line window checks, 3-track random blocks, combo score multiplier |
+| **Beginner** | 04 | [Catch the Fruits](./04-接水果/) | 5 Lessons | Horizontal basket movement, multi-fruit descending list, miss detection |
+| **Beginner** | 05 | [Whack-A-Mole](./05-打地鼠/) | 3 Lessons | 3x3 grid coordinate mapping, timer popups, hammer hit logic |
+| 🟩 **Elementary** | 06 | [Paddle Ball](./06-弹跳球接球/) | 3 Lessons | Gravity freefall, paddle controls, elastic rebounds from walls and paddle |
+| 🟩 **Elementary** | 07 | [Dino Runner](./07-小恐龙跳一跳/) | 3 Lessons | Ground baseline, gravity jump physics, cactus scrolling & colliderect |
+| 🟩 **Elementary** | 08 | [Tic-Tac-Toe](./08-井字棋对战/) | 3 Lessons | 3x3 grid lines, 1D board array model, 8 winning lines & tie detection |
+| 🟩 **Elementary** | 09 | [Slider Puzzle](./09-数字拼图/) | 3 Lessons | 100% solvable shuffle, Manhattan distance neighbor sliding, win verification |
+| 🟦 **Intermediate**| 10 | [Snake](./10-贪吃蛇/) | 5 Lessons | Discrete grid movement, turning anti-reversal, head-insert & tail-pop, self-bite check |
+| 🟦 **Intermediate**| 11 | [Flappy Bird](./11-横版飞行避障/) | 3 Lessons | Flappy jump velocity, paired green pipes scrolling, survival gap passage |
+| 🟦 **Intermediate**| 12 | [Fruit Slasher](./12-水果切切乐/) | 3 Lessons | Parabolic projectile motion, mouse dragging trace line, slicing detection |
+| 🟦 **Intermediate**| 13 | [Color Matcher](./13-颜色匹配/) | 3 Lessons | RGB color random sampling, clickable options, time bar countdown |
+| 🟦 **Intermediate**| 14 | [Maze Runner](./14-迷宫逃脱/) | 5 Lessons | 10x10 maze model, 4-corner bounding box anti-tunneling, countdown & reset |
+| 🟥 **Master** | 15 | [Brick Breaker](./15-打砖块/) | 5 Lessons | Ball reflection, mouse paddle control, 4x5 brick grid, elimination & victory |
+| 🟥 **Master** | 16 | [Space Invaders](./16-太空射击/) | 5 Lessons | Vector triangle ship, laser bullet firing, many-to-many Euclidean collisions |
+| 🟥 **Master** | 17 | [Simon Memory](./17-颜色记忆大师/) | 5 Lessons | 4-color quadrant canvas, finite state machine, progressive sequence validation |
+| 🟥 **Master** | 18 | [Gold Miner](./18-黄金矿工/) | 5 Lessons | Sinusoidal polar pendulum swing, spacebar claw launch, weight retraction speed |
 
 ---
 
 ## 🚀 Quick Start
 
 ### 1. Prerequisites & Environment Setup
-Make sure you have **Python 3.12 or higher** installed on your system.
+Make sure you have **Python 3.10 ~ 3.12 (Python 3.12 is strongly recommended)** installed on your system.
+> ⚠️ **Note for Beginners**: Please **avoid Python 3.14+ pre-releases**, as pre-built binary wheels for Pygame are not yet available, which will cause installation errors.
+
 Open your terminal and run the following command to install **Pygame**:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Interactive Graphical Launcher (Highly Recommended)
-To run lessons easily and visually browse the games, we have developed a beautiful **GUI Launcher** using **Pygame**. Run the following command in the project root to launch:
+### 2. Interactive Graphical Launcher (Recommended)
+To preview and launch lessons effortlessly, we have built a **Pygame GUI Launcher**. Run it from the repository root:
 
 ```bash
 python run_launcher.py
 ```
 
-Key features of the GUI Launcher:
-* **Sleek Dark Theme**: Supports smooth mouse hover transitions, glowing button borders, and selected state coloring.
-* **Two-Column Layout**: Left side lists the 18 games. Right side displays responsive lesson cards with clean formatted titles (e.g., `Lesson 1 - 气泡浮现`) and the corresponding source file name.
-* **Instant Website Redirect**: Click the author credits and link in the bottom-left corner to automatically load the website in your browser.
-
+Features:
+* **Dark Mode Aesthetics**: Smooth mouse hover highlights, neon borders, and selected item states.
+* **Dual-Column Layout**: 18 games listed on the left; lessons for the selected game displayed as cards on the right.
+* **Direct Links**: Author website link at the bottom-left automatically opens your browser.
 
 ---
 
 ## 🛠️ Contributing
 
-We welcome contributions from educators, students, and game developers!
-
-1. **Review Guidelines**: Before submitting a Pull Request (PR), please read [CONTRIBUTING.md](./CONTRIBUTING.md) to ensure your code follows the naming conventions and comment structures (Pinyin naming, three-in-one inline comments).
-2. **Behavioral Code**: Please review and adhere to [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md).
+Contributions are welcome! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) to ensure any new lessons align with the project's standards (pure Chinese variable names, column-aligned comments, vector drawing, default fonts).
 
 ---
 
 ## 📄 License
 
-This repository is licensed under the **[MIT License](./LICENSE)**. You are free to use it for personal learning, teacher training, school lessons, or commercial bootcamps.
+This project is licensed under the **[MIT License](./LICENSE)**.
 
 ---
 
-## 👨‍💻 About the Author
+## 👨‍💻 Author
 
-* **Author**: Cheng Xiaobao (程小宝)
+* **Author**: 程小宝 (Cheng Xiaobao)
 * **Official Website**: [xbkjz.cn](http://xbkjz.cn)
 * **GitHub Profile**: [@HenryYannis](https://github.com/HenryYannis)
-

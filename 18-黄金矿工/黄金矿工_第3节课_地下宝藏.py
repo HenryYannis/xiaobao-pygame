@@ -1,42 +1,54 @@
-# 黄金矿工_第3节课_地下宝藏.py
-# 学习目标：在第2节课基础上，学习使用列表生成地下金块，并实现钩子对物体的碰撞检测
-
-import pygame, math, random  # 导入库
+import pygame, math, random
 
 pygame.init()
-chuangkou = pygame.display.set_mode((400, 400))
-shizhong = pygame.time.Clock()
+窗口 = pygame.display.set_mode((400, 400))
+pygame.display.set_caption("Gold Miner - Lesson 3")
+时钟 = pygame.time.Clock()
 
-zhongxin, changdu, jiaodu, zhuangtai = [200, 50], 50, 0, 0
-# 新增变量：金块列表，存储每个金块的 [x, y, 半径]
-jinkuan_list = [[random.randint(50, 350), random.randint(150, 350), random.randint(10, 30)] for _ in range(5)]  # 宝藏容器（是什么），存储5个随机金块（为什么），列表推导式高效生成（怎么用）
+锚点x, 锚点y = 200, 50                                 # 矿工绳索顶部悬挂中心固定锚点坐标
+绳长 = 50.0                                           # 绳索当前伸缩长度
+角度 = 0.0                                            # 钩子摆动角度
+钩子状态 = "摆动"                                     # 钩子状态("摆动", "出钩", "收钩")
+金块列表 = [[random.randint(60, 340), random.randint(160, 350), random.randint(12, 28)] for _ in range(5)]  # 新增变量：地下随机分布的5块黄金矿石
+运行中 = True
 
-yunxing = True
-while yunxing:
-    for ev in pygame.event.get():
-        if ev.type == pygame.QUIT: yunxing = False
-        if ev.type == pygame.KEYDOWN and ev.key == pygame.K_SPACE and zhuangtai == 0: zhuangtai = 1
+while 运行中:
+    当前时间 = pygame.time.get_ticks()
 
-    if zhuangtai == 0: jiaodu = math.sin(pygame.time.get_ticks() / 500) * 80
-    elif zhuangtai == 1: changdu += 5
-    elif zhuangtai == 2: changdu -= 5
-    if changdu > 350: zhuangtai = 2
-    if changdu <= 50: zhuangtai = 0; changdu = 50
+    for 事件 in pygame.event.get():
+        if 事件.type == pygame.QUIT:
+            运行中 = False
+        if 事件.type == pygame.KEYDOWN and 事件.key == pygame.K_SPACE:
+            if 钩子状态 == "摆动":
+                钩子状态 = "出钩"
 
-    hudu = math.radians(jiaodu + 90)
-    mx, my = zhongxin[0] + changdu * math.cos(hudu), zhongxin[1] + changdu * math.sin(hudu)
+    if 钩子状态 == "摆动":
+        角度 = math.sin(当前时间 / 500.0) * 75.0
+    elif 钩子状态 == "出钩":
+        绳长 += 6.0
+    elif 钩子状态 == "收钩":
+        绳长 -= 6.0
+        if 绳长 <= 50.0:
+            绳长 = 50.0
+            钩子状态 = "摆动"
 
-    # 新增代码：碰撞检测逻辑。如果钩子末端接近金块，本课先简单实现金块消失并收钩
-    for i in range(len(jinkuan_list)-1, -1, -1):  # 倒序遍历（是什么），检查每个金块（为什么），for in索引循环（怎么用）
-        jx, jy, jr = jinkuan_list[i]  # 提取属性（是什么），金块坐标半径（为什么），解包变量（怎么用）
-        if math.hypot(mx - jx, my - jy) < jr:  # 碰撞判定（是什么），核对距离（为什么），调用math.hypot（怎么用）
-            jinkuan_list.pop(i); zhuangtai = 2; break  # 处理击中（是什么），金块消失并强制收钩（为什么），pop操作加改状态（怎么用）
+    弧度 = math.radians(角度 + 90.0)
+    钩尖x = 锚点x + 绳长 * math.cos(弧度)
+    钩尖y = 锚点y + 绳长 * math.sin(弧度)
 
-    chuangkou.fill((255, 255, 200))
-    for jx, jy, jr in jinkuan_list: pygame.draw.circle(chuangkou, (255, 215, 0), (jx, jy), jr)  # 画金块（是什么），金色圆圈（为什么），循环调用draw.circle（怎么用）
-    pygame.draw.line(chuangkou, (0, 0, 0), zhongxin, (mx, my), 3)
-    pygame.draw.circle(chuangkou, (100, 50, 0), zhongxin, 10)
+    if 钩子状态 == "出钩":
+        if 钩尖x < 10 or 钩尖x > 390 or 钩尖y > 390:
+            钩子状态 = "收钩"
 
-    pygame.display.flip(); shizhong.tick(60)
+    窗口.fill((245, 235, 195))                         # 暖沙黄色地下矿洞背景全屏填充
+
+    for 金块 in 金块列表:                              # 新增代码：循环绘制地下金黄色矿石
+        pygame.draw.circle(窗口, (255, 200, 0), (金块[0], 金块[1]), 金块[2])
+
+    pygame.draw.line(窗口, (70, 50, 30), (锚点x, 锚点y), (钩尖x, 钩尖y), 3)
+    pygame.draw.circle(窗口, (120, 120, 120), (int(钩尖x), int(钩尖y)), 6)
+
+    pygame.display.flip()                              # 双缓冲刷新：将新绘制的画面一次性呈现到屏幕
+    时钟.tick(60)                                      # 锁定帧率：稳定每秒60帧流畅运行
 
 pygame.quit()

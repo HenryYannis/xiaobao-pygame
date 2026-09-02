@@ -1,42 +1,50 @@
-# 黄金矿工_第2节课_出钩与收钩.py
-# 学习目标：在第1节课基础上，学习使用“状态机”管理钩子的不同行为（摆动、伸长、收回）
-
-import pygame, math  # 导入库
+import pygame, math
 
 pygame.init()
-chuangkou = pygame.display.set_mode((400, 400))
-shizhong = pygame.time.Clock()
+窗口 = pygame.display.set_mode((400, 400))
+pygame.display.set_caption("Gold Miner - Lesson 2")
+时钟 = pygame.time.Clock()
 
-zhongxin = [200, 50]
-changdu, jiaodu = 50, 0
-# 新增变量：管理钩子状态。0:摆动, 1:下放, 2:收回
-zhuangtai = 0  # 钩子状态（是什么），记录当前工作模式（为什么），整数0/1/2切换（怎么用）
+锚点x, 锚点y = 200, 50                                 # 矿工绳索顶部悬挂中心固定锚点坐标
+绳长 = 50.0                                           # 绳索当前伸缩长度
+角度 = 0.0                                            # 钩子摆动角度
+钩子状态 = "摆动"                                     # 新增变量：钩子状态("摆动", "出钩", "收钩")
+运行中 = True
 
-yunxing = True
-while yunxing:
-    for ev in pygame.event.get():
-        if ev.type == pygame.QUIT: yunxing = False
-        # 新增代码：按下空格键尝试出钩
-        if ev.type == pygame.KEYDOWN and ev.key == pygame.K_SPACE and zhuangtai == 0:  # 发射判定（是什么），触发动作（为什么），仅在摆动时有效（怎么用）
-            zhuangtai = 1  # 切换到下放模式（是什么），开始伸长（为什么），变量修改为1（怎么用）
+while 运行中:
+    当前时间 = pygame.time.get_ticks()
 
-    # 逻辑更新：根据不同状态执行动作
-    if zhuangtai == 0:  # 摆动模式
-        jiaodu = math.sin(pygame.time.get_ticks() / 500) * 80
-    elif zhuangtai == 1:  # 下放模式
-        changdu += 5  # 伸长（是什么），向下探测（为什么），变量自增（怎么用）
-        if changdu > 350: zhuangtai = 2  # 触底自动收回（是什么），边界保护（为什么），判断长度是否超限（怎么用）
-    elif zhuangtai == 2:  # 收回模式
-        changdu -= 5  # 缩短（是什么），拉回钩子（为什么），变量自减（怎么用）
-        if changdu <= 50: zhuangtai = 0; changdu = 50  # 恢复摆动（是什么），重置循环（为什么），回到模式0（怎么用）
+    for 事件 in pygame.event.get():
+        if 事件.type == pygame.QUIT:
+            运行中 = False
+        if 事件.type == pygame.KEYDOWN and 事件.key == pygame.K_SPACE:  # 新增代码：按空格释放飞钩
+            if 钩子状态 == "摆动":
+                钩子状态 = "出钩"
 
-    hudu = math.radians(jiaodu + 90)
-    m_x, m_y = zhongxin[0] + changdu * math.cos(hudu), zhongxin[1] + changdu * math.sin(hudu)
+    if 钩子状态 == "摆动":
+        角度 = math.sin(当前时间 / 500.0) * 75.0
+    elif 钩子状态 == "出钩":                           # 新增代码：沿角度直线伸长
+        绳长 += 6.0
+    elif 钩子状态 == "收钩":                           # 新增代码：匀速收回
+        绳长 -= 6.0
+        if 绳长 <= 50.0:
+            绳长 = 50.0
+            钩子状态 = "摆动"
 
-    chuangkou.fill((255, 255, 200))
-    pygame.draw.line(chuangkou, (0, 0, 0), zhongxin, (m_x, m_y), 3)
-    pygame.draw.circle(chuangkou, (100, 50, 0), zhongxin, 10)
+    弧度 = math.radians(角度 + 90.0)
+    钩尖x = 锚点x + 绳长 * math.cos(弧度)
+    钩尖y = 锚点y + 绳长 * math.sin(弧度)
 
-    pygame.display.flip(); shizhong.tick(60)
+    if 钩子状态 == "出钩":                             # 新增代码：出界判定转入收钩
+        if 钩尖x < 10 or 钩尖x > 390 or 钩尖y > 390:
+            钩子状态 = "收钩"
+
+    窗口.fill((245, 235, 195))                         # 暖沙黄色地下矿洞背景全屏填充
+
+    pygame.draw.line(窗口, (70, 50, 30), (锚点x, 锚点y), (钩尖x, 钩尖y), 3)
+    pygame.draw.circle(窗口, (120, 120, 120), (int(钩尖x), int(钩尖y)), 6)
+
+    pygame.display.flip()                              # 双缓冲刷新：将新绘制的画面一次性呈现到屏幕
+    时钟.tick(60)                                      # 锁定帧率：稳定每秒60帧流畅运行
 
 pygame.quit()
