@@ -13,8 +13,8 @@ while 运行中:
     for 事件 in pygame.event.get():
         if 事件.type == pygame.QUIT:
             运行中 = False
-        if 事件.type == pygame.MOUSEBUTTONDOWN:        # 新增代码：响应鼠标点击落子
-            鼠标x, 鼠标y = pygame.mouse.get_pos()      # 新增代码：获取鼠标点击坐标
+        if 事件.type == pygame.MOUSEBUTTONDOWN and 事件.button == 1:  # 新增代码：响应鼠标左键落子(button 1是左键，滚轮和右键不算)
+            鼠标x, 鼠标y = 事件.pos                   # 新增代码：取事件自带的点击坐标
             格点索引 = (鼠标y // 100) * 3 + (鼠标x // 100)  # 新增代码：换算列表索引(0-8)
             if 0 <= 格点索引 < 9 and 棋盘数据[格点索引] == 0:  # 新增代码：仅在空格位允许落子
                 棋盘数据[格点索引] = 当前玩家         # 新增代码：写入当前玩家棋子
