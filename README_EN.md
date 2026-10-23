@@ -30,26 +30,26 @@ To ensure that the code is completely beginner-friendly and readable, all files 
 
 The syllabus scales gradually from single click event checks to complex multi-body collision detection, finite state machines (FSM), and polar coordinate mechanics:
 
-| Difficulty | Index | Game Title | Lessons | Core Pedagogical Concepts |
-| :--- | :---: | :--- | :---: | :--- |
-| **Beginner** | 01 | [Pixel Painter](./01-像素画家/) | 3 Lessons | 2D coordinate grid creation, cursor-to-cell index math, palette switching |
-| **Beginner** | 02 | [Click & Pop](./02-点击消除/) | 3 Lessons | Click coordinate checks, random positioning, Euclidean distance detection |
-| **Beginner** | 03 | [Beat Block](./03-节奏方块/) | 4 Lessons | Rhythmic hit line window checks, 3-track random blocks, combo score multiplier |
-| **Beginner** | 04 | [Catch the Fruits](./04-接水果/) | 5 Lessons | Horizontal basket movement, multi-fruit descending list, miss detection |
-| **Beginner** | 05 | [Whack-A-Mole](./05-打地鼠/) | 3 Lessons | 3x3 grid coordinate mapping, timer popups, hammer hit logic |
-| 🟩 **Elementary** | 06 | [Paddle Ball](./06-弹跳球接球/) | 3 Lessons | Gravity freefall, paddle controls, elastic rebounds from walls and paddle |
-| 🟩 **Elementary** | 07 | [Dino Runner](./07-小恐龙跳一跳/) | 3 Lessons | Ground baseline, gravity jump physics, cactus scrolling & colliderect |
-| 🟩 **Elementary** | 08 | [Tic-Tac-Toe](./08-井字棋对战/) | 3 Lessons | 3x3 grid lines, 1D board array model, 8 winning lines & tie detection |
-| 🟩 **Elementary** | 09 | [Slider Puzzle](./09-数字拼图/) | 3 Lessons | 100% solvable shuffle, Manhattan distance neighbor sliding, win verification |
-| 🟦 **Intermediate**| 10 | [Snake](./10-贪吃蛇/) | 5 Lessons | Discrete grid movement, turning anti-reversal, head-insert & tail-pop, self-bite check |
-| 🟦 **Intermediate**| 11 | [Flappy Bird](./11-横版飞行避障/) | 3 Lessons | Flappy jump velocity, paired green pipes scrolling, survival gap passage |
-| 🟦 **Intermediate**| 12 | [Fruit Slasher](./12-水果切切乐/) | 3 Lessons | Parabolic projectile motion, mouse dragging trace line, slicing detection |
-| 🟦 **Intermediate**| 13 | [Color Matcher](./13-颜色匹配/) | 3 Lessons | RGB color random sampling, clickable options, time bar countdown |
-| 🟦 **Intermediate**| 14 | [Maze Runner](./14-迷宫逃脱/) | 5 Lessons | 10x10 maze model, 4-corner bounding box anti-tunneling, countdown & reset |
-| 🟥 **Master** | 15 | [Brick Breaker](./15-打砖块/) | 5 Lessons | Ball reflection, mouse paddle control, 4x5 brick grid, elimination & victory |
-| 🟥 **Master** | 16 | [Space Invaders](./16-太空射击/) | 5 Lessons | Vector triangle ship, laser bullet firing, many-to-many Euclidean collisions |
-| 🟥 **Master** | 17 | [Simon Memory](./17-颜色记忆大师/) | 5 Lessons | 4-color quadrant canvas, finite state machine, progressive sequence validation |
-| 🟥 **Master** | 18 | [Gold Miner](./18-黄金矿工/) | 5 Lessons | Sinusoidal polar pendulum swing, spacebar claw launch, weight retraction speed |
+| Difficulty | Index | Game Title | Lessons | Core Pedagogical Concepts | Preview |
+| :--- | :---: | :--- | :---: | :--- | :---: |
+| **Beginner** | 01 | [Pixel Painter](./01-像素画家/) | 3 Lessons | 2D coordinate grid creation, cursor-to-cell index math, palette switching | <img src="./docs/gif/01.gif" width="120" alt="01"> |
+| **Beginner** | 02 | [Click & Pop](./02-点击消除/) | 3 Lessons | Click coordinate checks, random positioning, Euclidean distance detection | <img src="./docs/gif/02.gif" width="120" alt="02"> |
+| **Beginner** | 03 | [Beat Block](./03-节奏方块/) | 4 Lessons | Rhythmic hit line window checks, 3-track random blocks, combo score multiplier | <img src="./docs/gif/03.gif" width="120" alt="03"> |
+| **Beginner** | 04 | [Catch the Fruits](./04-接水果/) | 5 Lessons | Horizontal basket movement, multi-fruit descending list, miss detection | <img src="./docs/gif/04.gif" width="120" alt="04"> |
+| **Beginner** | 05 | [Whack-A-Mole](./05-打地鼠/) | 3 Lessons | 3x3 grid coordinate mapping, timer popups, hammer hit logic | <img src="./docs/gif/05.gif" width="120" alt="05"> |
+| 🟩 **Elementary** | 06 | [Paddle Ball](./06-弹跳球接球/) | 3 Lessons | Gravity freefall, paddle controls, elastic rebounds from walls and paddle | <img src="./docs/gif/06.gif" width="120" alt="06"> |
+| 🟩 **Elementary** | 07 | [Dino Runner](./07-小恐龙跳一跳/) | 3 Lessons | Ground baseline, gravity jump physics, cactus scrolling & colliderect | <img src="./docs/gif/07.gif" width="120" alt="07"> |
+| 🟩 **Elementary** | 08 | [Tic-Tac-Toe](./08-井字棋对战/) | 3 Lessons | 3x3 grid lines, 1D board array model, 8 winning lines & tie detection | <img src="./docs/gif/08.gif" width="120" alt="08"> |
+| 🟩 **Elementary** | 09 | [Slider Puzzle](./09-数字拼图/) | 3 Lessons | 100% solvable shuffle, Manhattan distance neighbor sliding, win verification | <img src="./docs/gif/09.gif" width="120" alt="09"> |
+| 🟦 **Intermediate**| 10 | [Snake](./10-贪吃蛇/) | 5 Lessons | Discrete grid movement, turning anti-reversal, head-insert & tail-pop, self-bite check | <img src="./docs/gif/10.gif" width="120" alt="10"> |
+| 🟦 **Intermediate**| 11 | [Flappy Bird](./11-横版飞行避障/) | 3 Lessons | Flappy jump velocity, paired green pipes scrolling, survival gap passage | <img src="./docs/gif/11.gif" width="120" alt="11"> |
+| 🟦 **Intermediate**| 12 | [Fruit Slasher](./12-水果切切乐/) | 3 Lessons | Parabolic projectile motion, mouse dragging trace line, slicing detection | <img src="./docs/gif/12.gif" width="120" alt="12"> |
+| 🟦 **Intermediate**| 13 | [Color Matcher](./13-颜色匹配/) | 3 Lessons | RGB color random sampling, clickable options, time bar countdown | <img src="./docs/gif/13.gif" width="120" alt="13"> |
+| 🟦 **Intermediate**| 14 | [Maze Runner](./14-迷宫逃脱/) | 5 Lessons | 10x10 maze model, 4-corner bounding box anti-tunneling, countdown & reset | <img src="./docs/gif/14.gif" width="120" alt="14"> |
+| 🟥 **Master** | 15 | [Brick Breaker](./15-打砖块/) | 5 Lessons | Ball reflection, mouse paddle control, 4x5 brick grid, elimination & victory | <img src="./docs/gif/15.gif" width="120" alt="15"> |
+| 🟥 **Master** | 16 | [Space Invaders](./16-太空射击/) | 5 Lessons | Vector triangle ship, laser bullet firing, many-to-many Euclidean collisions | <img src="./docs/gif/16.gif" width="120" alt="16"> |
+| 🟥 **Master** | 17 | [Simon Memory](./17-颜色记忆大师/) | 5 Lessons | 4-color quadrant canvas, finite state machine, progressive sequence validation | <img src="./docs/gif/17.gif" width="120" alt="17"> |
+| 🟥 **Master** | 18 | [Gold Miner](./18-黄金矿工/) | 5 Lessons | Sinusoidal polar pendulum swing, spacebar claw launch, weight retraction speed | <img src="./docs/gif/18.gif" width="120" alt="18"> |
 
 ---
 
