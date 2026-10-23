@@ -26,8 +26,8 @@ while 运行中:
     for 事件 in pygame.event.get():
         if 事件.type == pygame.QUIT:
             运行中 = False
-        if 事件.type == pygame.MOUSEBUTTONDOWN:        # 新增代码：响应鼠标点击选择
-            鼠标x, 鼠标y = pygame.mouse.get_pos()      # 新增代码：获取点击时的鼠标坐标
+        if 事件.type == pygame.MOUSEBUTTONDOWN and 事件.button == 1:  # 新增代码：响应鼠标左键点击选择(滚轮和右键不算)
+            鼠标x, 鼠标y = 事件.pos                   # 新增代码：取事件自带的点击坐标
             选择颜色 = -1                             # 新增代码：初始化选择结果，-1代表未点击在有效方块内
             if 160 <= 鼠标y <= 240:                    # 新增代码：判定是否落在下方选项高度区间内
                 if 50 <= 鼠标x <= 170:                 # 新增代码：点击左侧选项方块
