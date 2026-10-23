@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff
+      - name: 只查真正的错误(语法错误、未定义的名字)
+        run: ruff check --select E9,F821 .
+
+  smoke:
+    name: smoke (${{ matrix.os }}, Python ${{ matrix.python }}, ${{ matrix.pkg }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, python: "3.10", pkg: pygame }
+          - { os: ubuntu-latest, python: "3.12", pkg: pygame }
+          - { os: ubuntu-latest, python: "3.13", pkg: pygame }
+          - { os: ubuntu-latest, python: "3.14", pkg: pygame-ce }
+          - { os: windows-latest, python: "3.12", pkg: pygame }
+          - { os: macos-latest, python: "3.12", pkg: pygame }
+    env:
+      SDL_VIDEODRIVER: dummy
+      SDL_AUDIODRIVER: dummy
+      PYTHONUTF8: "1"
+      PYTHONIOENCODING: utf-8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: 安装依赖
+        shell: bash
+        run: |
+          if [ "${{ matrix.pkg }}" = "pygame-ce" ]; then pip install pygame-ce; else pip install -r requirements.txt; fi
+      - name: 编译检查
+        run: python -m compileall -q .
+      - name: 无界面冒烟测试(每节课 300 帧)
+        run: python tools/smoke_test.py 300
