@@ -8,13 +8,12 @@ pygame.display.set_caption("Gold Miner - Lesson 3")
 锚点x, 锚点y = 200, 50                                 # 矿工绳索顶部悬挂中心固定锚点坐标
 绳长 = 50.0                                           # 绳索当前伸缩长度
 角度 = 0.0                                            # 钩子摆动角度
+摆动时间 = 0                                          # 钩子已经摆动了多少帧(只在摆动状态下累加)
 钩子状态 = "摆动"                                     # 钩子状态("摆动", "出钩", "收钩")
 金块列表 = [[random.randint(60, 340), random.randint(160, 350), random.randint(12, 28)] for _ in range(5)]  # 新增变量：地下随机分布的5块黄金矿石
 运行中 = True
 
 while 运行中:
-    当前时间 = pygame.time.get_ticks()
-
     for 事件 in pygame.event.get():
         if 事件.type == pygame.QUIT:
             运行中 = False
@@ -23,7 +22,8 @@ while 运行中:
                 钩子状态 = "出钩"
 
     if 钩子状态 == "摆动":
-        角度 = math.sin(当前时间 / 500.0) * 75.0
+        摆动时间 += 1                                 # 只在摆动状态累加：出钩、收钩期间计时暂停，收回后从原来的角度接着摆，不会瞬移
+        角度 = math.sin(摆动时间 / 30.0) * 75.0       # 正弦函数驱动单摆左右周期性晃动
     elif 钩子状态 == "出钩":
         绳长 += 6.0
     elif 钩子状态 == "收钩":
