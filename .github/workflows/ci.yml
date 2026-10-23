@@ -17,6 +17,8 @@ jobs:
       - run: pip install ruff
       - name: 只查真正的错误(语法错误、未定义的名字)
         run: ruff check --select E9,F821 .
+      - name: 增量标注检查(只出报告，不判失败)
+        run: python tools/check_increment.py
 
   smoke:
     name: smoke (${{ matrix.os }}, Python ${{ matrix.python }}, ${{ matrix.pkg }})

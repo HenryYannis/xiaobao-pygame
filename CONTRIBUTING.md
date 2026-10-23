@@ -45,6 +45,10 @@ Because this is a teaching repository, consistency is our highest priority. **Al
   - `# 新增变量：` (New variable)
   - `# 新增函数：` (New function)
   - `# 新增代码：` (New code)
+  - `# 修改代码：` (Changed code — the line existed in the previous lesson but was rewritten)
+- Lines kept unchanged from the previous lesson must **not** be marked as `新增`.
+  上一课已有、本课原样保留的行不要再标“新增”。
+- **Check / 自查**: run `python tools/check_increment.py` before submitting; it diffs each lesson against the previous one (comments stripped) and lists mislabeled, unlabeled and probably-changed lines for manual review.
 
 ---
 
