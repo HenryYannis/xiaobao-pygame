@@ -13,7 +13,7 @@ while 运行中:
         if 事件.type == pygame.QUIT:
             运行中 = False
 
-    if random.random() < 0.03:                         # 随机生成：每帧3%概率产生新气泡，控制出现节奏
+    if random.random() < 0.03 and len(气泡列表) < 8:  # 随机生成：每帧3%概率产生新气泡，最多同时8个，不会铺满屏幕
         气泡列表.append([random.randint(20, 380), random.randint(20, 380)])
 
     窗口.fill((255, 255, 255))                         # 清空画布：擦除上一帧残留画面，白色RGB(255,255,255)全屏覆盖
