@@ -20,8 +20,8 @@ while 运行中:
     for 事件 in pygame.event.get():
         if 事件.type == pygame.QUIT:
             运行中 = False
-        if 事件.type == pygame.MOUSEBUTTONDOWN and 地鼠索引 != -1:  # 新增代码：有地鼠冒头时响应鼠标点击打击
-            鼠标x, 鼠标y = pygame.mouse.get_pos()                 # 新增代码：获取点击时的鼠标坐标
+        if 事件.type == pygame.MOUSEBUTTONDOWN and 事件.button == 1 and 地鼠索引 != -1:  # 新增代码：有地鼠冒头时响应鼠标左键打击(button 1是左键)
+            鼠标x, 鼠标y = 事件.pos                   # 新增代码：取事件自带的点击坐标
             地鼠x, 地鼠y = 地洞列表[地鼠索引]                     # 新增代码：获取当前冒头地鼠的圆心坐标
             if math.hypot(鼠标x - 地鼠x, 鼠标y - 地鼠y) <= 30:     # 新增代码：勾股定理算距离，小于半径30判定击中
                 地鼠索引 = -1                                     # 新增代码：击中后地鼠缩回潜伏隐藏
