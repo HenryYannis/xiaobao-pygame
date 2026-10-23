@@ -1,11 +1,12 @@
 # XiaoBao-Pygame | Python Game Series Curriculum (Teacher & Educator Edition)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python Version](https://img.shields.io/badge/python-3.10--3.12%20(Recommended%203.12)-blue.svg)](https://www.python.org/)
+[![Python Version](https://img.shields.io/badge/python-3.10--3.13%20(Recommended%203.12)-blue.svg)](https://www.python.org/)
+[![CI](https://github.com/HenryYannis/xiaobao-pygame/actions/workflows/ci.yml/badge.svg)](https://github.com/HenryYannis/xiaobao-pygame/actions/workflows/ci.yml)
 [![Library Dependency](https://img.shields.io/badge/dependency-Pygame-green.svg)](https://www.pygame.org/)
-[![Curriculum Complexity](https://img.shields.io/badge/Curriculum-18%20Games%20%2F%2070%20Lessons-orange.svg)](#curriculum-syllabus-difficulty-ladder)
+[![Curriculum Complexity](https://img.shields.io/badge/Curriculum-18%20Games%20%2F%2069%20Lessons-orange.svg)](#curriculum-syllabus-difficulty-ladder)
 
-This repository is designed specifically for **programming beginners** and **K-12 educators**. It contains an educational curriculum based on the **Pygame** engine. The curriculum includes **18 classic games** of varying difficulty levels, split across **70 step-by-step, progressive lessons**. It is designed to teach students logical thinking and coordinate-based math concepts through interactive, playful examples.
+This repository is designed specifically for **programming beginners** and **K-12 educators**. It contains an educational curriculum based on the **Pygame** engine. The curriculum includes **18 classic games** of varying difficulty levels, split across **69 step-by-step, progressive lessons**. It is designed to teach students logical thinking and coordinate-based math concepts through interactive, playful examples.
 
 ---
 
@@ -55,8 +56,14 @@ The syllabus scales gradually from single click event checks to complex multi-bo
 ## 🚀 Quick Start
 
 ### 1. Prerequisites & Environment Setup
-Make sure you have **Python 3.10 ~ 3.12 (Python 3.12 is strongly recommended)** installed on your system.
-> ⚠️ **Note for Beginners**: Please **avoid Python 3.14+ pre-releases**, as pre-built binary wheels for Pygame are not yet available, which will cause installation errors.
+Make sure you have **Python 3.10 ~ 3.13 (Python 3.12 recommended)** installed on your system.
+> ⚠️ **Note for Beginners**: Python 3.14 is a stable release, but Pygame (2.6.1) does not ship pre-built wheels for 3.14 yet, so `pip install pygame` fails there. On **Python 3.14+**, install the compatible community edition **pygame-ce** instead — no code changes are needed:
+>
+> ```bash
+> pip install pygame-ce
+> ```
+>
+> CI runs every lesson on Python 3.10 / 3.12 / 3.13 (pygame) and Python 3.14 (pygame-ce).
 
 Open your terminal and run the following command to install **Pygame**:
 
