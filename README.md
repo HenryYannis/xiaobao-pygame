@@ -1,11 +1,12 @@
 # XiaoBao-Pygame | Python 游戏系列课程 (教师教学版)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python Version](https://img.shields.io/badge/python-3.10--3.12%20(Recommended%203.12)-blue.svg)](https://www.python.org/)
+[![Python Version](https://img.shields.io/badge/python-3.10--3.13%20(Recommended%203.12)-blue.svg)](https://www.python.org/)
+[![CI](https://github.com/HenryYannis/xiaobao-pygame/actions/workflows/ci.yml/badge.svg)](https://github.com/HenryYannis/xiaobao-pygame/actions/workflows/ci.yml)
 [![Library Dependency](https://img.shields.io/badge/dependency-Pygame-green.svg)](https://www.pygame.org/)
-[![Curriculum Complexity](https://img.shields.io/badge/Curriculum-18%20Games%20%2F%2070%20Lessons-orange.svg)](#教学大纲-难度阶梯)
+[![Curriculum Complexity](https://img.shields.io/badge/Curriculum-18%20Games%20%2F%2069%20Lessons-orange.svg)](#教学大纲-难度阶梯)
 
-本仓库专为 **编程初学者** 以及 **中小学/少儿编程教师** 打造，提供了一套基于 **Pygame** 开发的经典游戏系列教学课程。全库包含 18 个不同难度的游戏项目，共 70 个渐进式课时，旨在通过趣味十足的案例，引导学生逐步建立“逻辑思维”和“坐标系概念”。
+本仓库专为 **编程初学者** 以及 **中小学/少儿编程教师** 打造，提供了一套基于 **Pygame** 开发的经典游戏系列教学课程。全库包含 18 个不同难度的游戏项目，共 69 个渐进式课时，旨在通过趣味十足的案例，引导学生逐步建立“逻辑思维”和“坐标系概念”。
 
 ---
 
@@ -55,8 +56,14 @@
 ## 🚀 快速开始
 
 ### 1. 运行环境配置
-确保您的电脑上已安装 **Python 3.10 ~ 3.12（强烈推荐 Python 3.12）**。
-> ⚠️ **新手注意**：请**不要使用 Python 3.14 及以上测试版**，因其暂无官方预编译轮子（Wheel），会导致 Pygame 安装失败。
+确保您的电脑上已安装 **Python 3.10 ~ 3.13（推荐 Python 3.12）**。
+> ⚠️ **新手注意**：Python 3.14 早已是正式版，但 Pygame 目前（2.6.1）还没有为 3.14 提供预编译轮子（Wheel），直接 `pip install pygame` 会安装失败。如果您用的是 **Python 3.14 及以上**，请改为安装兼容的社区版 **pygame-ce**，课程代码无需任何修改：
+>
+> ```bash
+> pip install pygame-ce
+> ```
+>
+> 仓库的 CI 会在 Python 3.10 / 3.12 / 3.13（pygame）和 Python 3.14（pygame-ce）上自动运行全部课程。
 
 然后，打开终端并运行以下命令，一键安装唯一的第三方库依赖 **Pygame**：
 
