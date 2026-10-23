@@ -20,7 +20,7 @@ while 运行中:
     for 事件 in pygame.event.get():
         if 事件.type == pygame.QUIT:
             运行中 = False
-        if 事件.type == pygame.MOUSEBUTTONDOWN and 游戏状态 == "准备":
+        if 事件.type == pygame.MOUSEBUTTONDOWN and 事件.button == 1 and 游戏状态 == "准备":  # 只响应鼠标左键，滚轮和右键不算点击
             游戏状态 = "进行"                         # 点击后从准备状态切换到游戏进行状态
 
     窗口.fill((40, 40, 60))                           # 深蓝灰色背景全屏填充
