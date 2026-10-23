@@ -22,7 +22,7 @@ To ensure that the code is completely beginner-friendly and readable, all files 
 4. **Zero External Assets & Default Font (Error-Proof & Universal)**:
    - All visual rendering is done using Pygame vector drawing methods (`pygame.draw.circle`, `pygame.draw.rect`, etc.). No external images or audio files are used, preventing file-path errors.
    - Strictly uses Pygame's built-in default font `pygame.font.Font(None, 36)`. Never loads system fonts to guarantee cross-platform compatibility. All on-screen rendered text uses clean English (e.g., `SCORE`, `GAME OVER`, `YOU WIN!`, `TIME UP!`).
-5. **Incremental Diff Markers**: Newly introduced lines compared to the previous lesson are marked at the end of the line: `# 新增变量：` (new variable), `# 新增函数：` (new function), or `# 新增代码：` (new code).
+5. **Incremental Diff Markers**: Newly introduced lines compared to the previous lesson are marked at the end of the line: `# 新增变量：` (new variable), `# 新增函数：` (new function), or `# 新增代码：` (new code); lines rewritten from the previous lesson use `# 修改代码：` (changed code). Run `python tools/check_increment.py` to check the markers.
 
 ---
 
